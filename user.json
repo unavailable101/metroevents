@@ -1,0 +1,44 @@
+[
+    {
+        "uid": 1,
+        "name": "nina margarette catubig",
+        "username": "ninz",
+        "email": "marga18nins@gmail.com",
+        "password": "123456"
+    },
+    {
+        "uid": 2,
+        "name": "test",
+        "username": "test",
+        "email": "test@test.com",
+        "password": "test"
+    },
+    {
+        "uid": 3,
+        "name": "n",
+        "username": "n",
+        "email": "n@n.com",
+        "password": "n"
+    },
+    {
+        "uid": 4,
+        "name": "again",
+        "username": "again",
+        "email": "again@gmail.com",
+        "password": "again"
+    },
+    {
+        "uid": 5,
+        "name": "hey",
+        "username": "hey",
+        "email": "hey@hey.com",
+        "password": "hey"
+    },
+    {
+        "uid": 6,
+        "name": "maria",
+        "username": "EDIZA",
+        "email": "ediza@edixa.com",
+        "password": "123456"
+    }
+]
