@@ -12,6 +12,8 @@
 <html>
 <head>
   <title>Metro Events</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
 <body>
   
@@ -27,5 +29,6 @@
       ?>
     </div>
   </div>
+  <script src = "myscripts.js"></script>
 </body>
 </html>

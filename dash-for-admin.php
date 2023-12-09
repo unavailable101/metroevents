@@ -5,6 +5,8 @@
     if ($_SERVER["REQUEST_METHOD"] == "POST"){
         createEvent();
     }
+
+    
 ?>
 
 <style>
@@ -49,6 +51,8 @@
 
 </style>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <div style="display: inline-block; vertical-align: top; margin-top: 25px; width: 40%;">
     <div>
         <span>
@@ -90,30 +94,7 @@
     </div>
 </div>
 
-<script>
-    // Show modal
-    function showCancellationModal(eventId) {
-        var modal = document.getElementById("cancelModal");
-        modal.style.display = "block";
-    }
-
-    // Hide modal
-    function hideCancellationModal() {
-        var modal = document.getElementById("cancelModal");
-        modal.style.display = "none";
-    }
-
-    // Cancel event
-    function cancelEvent(eventId) {
-        var cancellationReason = document.getElementById("cancelReason").value;
-
-        // AJAX call or PHP form submission to handle cancellation and removal of event from JSON
-        // Delete event with ID 'eventId' from your JSON data using PHP
-
-        // Hide modal after submission
-        hideCancellationModal();
-    }
-</script>
+<script src = "myscripts.js"></script>
 
 
 <!-- para unta di mag refresh 

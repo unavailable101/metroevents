@@ -1,0 +1,11 @@
+Join request called with Event ID: 10 and UID: 2
+Organizer request called with Event ID: 9 and UID: 2
+Join request called with Event ID: 10 and UID: 2
+Organizer request called with Event ID: 9 and UID: 2
+Organizer request called with Event ID: 9 and UID: 2
+Join request called with Event ID: 10 and UID: 2
+Cancellation of Event called with Event ID: 10 and reason: asd
+Cancellation of Event called with Event ID:  and reason: asd
+Cancellation of Event called with Event ID: 10 and reason: sdasd
+Cancellation of Event called with Event ID: 13 and reason: asd
+Cancellation of Event called with Event ID: 13 and reason: asas

@@ -1,6 +1,6 @@
 <?php
 
-    $userJSON = "user.json";
+    $userJSON = "data/user.json";
     $stored_users = json_decode(file_get_contents($userJSON), true);
     $new_user;
 
@@ -54,7 +54,7 @@
     }
 
     // for events nani dire dapit
-    $eventJSON = "events.json";
+    $eventJSON = "data/events.json";
     $stored_events = json_decode(file_get_contents($eventJSON), true);
 
     function createEvent() {
@@ -124,7 +124,7 @@
                     <div class="modal-content">
                         <span class="close" onclick="hideCancellationModal()">&times;</span>
                         <textarea id="cancelReason" rows="4" cols="50" placeholder="Enter reason for cancellation..."></textarea>
-                        <button onclick="cancelEvent(' . $event['eventId'] . ')">Submit</button>
+                        <button onclick="cancelEvent(' . $event['eventId'] . ')" type="submit">Submit</button>
                     </div>
                 </div>
                 ';
@@ -162,13 +162,6 @@
             $lastP = end($event['participants']);
             $noParts = isset($lastP['partId']) ? $lastP['partId'] : 0;
 
-            $buttonText; 
-            if ($orgUsername == null) { 
-                $buttonText = 'Request to be an Organizer';
-            } else { 
-                $buttonText = 'Request to Join';
-            }
-
             echo '
                 <div style="display: inline-block; width: 300px; height: 250px; border: 1px solid black; margin-top: 1.5%; padding: 10px; border-radius: 10px;">
                     <center>
@@ -179,9 +172,116 @@
                          $event['eventType'] . '<br><p style="font-size: 15px;margin-top: 0;">' . $event['eventDate'] . ' @ ' . $event['eventTime'].'</p></h3>
                     <p>Admin: '.$adUsername.'</p>
                     <p>Organizer: '.$orgUsername.'</p>
-                    <p>Participants: '. $noParts .'</p>
-                    <button>' . $buttonText . '</button>
+                    <p>Participants: '. $noParts .'</p>'. 
+                        (($orgUsername == null) ? '<button onclick="requestOrg(' . $event['eventId'] . ',' . $_SESSION['uid'] . ')">Request to be an Organizer</button>' : '<button onclick="requestJoin(' . $event['eventId'] . ',' . $_SESSION['uid'] . ')">Request to Join</button>') . '
                 </div>';
+        }
+    }
+
+    if(isset($_POST['functionName']) && function_exists($_POST['functionName'])) {
+        $functionName = $_POST['functionName'];
+        $eventId = $_POST['eventId'];
+        // Call the appropriate function based on the received functionName
+        if ($functionName == "eventCancel") {
+            $cancellationReason = $_POST['cancellationReason'];
+            eventCancel($eventId, $cancellationReason);
+        } elseif (function_exists($functionName)) {
+            $uid = $_POST['uid'];
+            $functionName($eventId, $uid);
+        } else {
+            // Handle the case when the function doesn't exist
+            echo "Function $functionName does not exist";
+        }
+    }
+
+    //for cancellation of events (delete events bha)
+    //this function works, pero sa last pd na eventId ang ma delete
+    //dili ang desired event ang iya ma delete, sa last gyud sha mu delete
+    function eventCancel($eventId, $cancellationReason) {
+        // file_put_contents('testing.txt', "Cancellation of Event called with Event ID: $eventId and reason: $cancellationReason\n", FILE_APPEND);
+        global $eventJSON;
+        global $stored_events;
+
+        foreach ($stored_events as $key => $event) {
+            if ($event['eventId'] == $eventId) {
+                unset($stored_events[$key]);
+                // Continue processing the remaining events in the array
+                continue;
+            }
+        }
+    
+        $json_encoded = json_encode($stored_events, JSON_PRETTY_PRINT);
+    
+        if (!file_put_contents($eventJSON, $json_encoded, LOCK_EX)) {
+            // If file_put_contents failed, output an error message
+            echo json_encode(["success" => false, "error" => "Failed to write to file"]);
+            exit();
+        }
+        // Redirect back to the dashboard or any other page
+        // header("Location: dashboard.php");
+        echo json_encode(["success" => true]);
+        exit();
+    }
+
+    //for sending notifs nani
+    $notifJSON = "data/notifs.json";
+    $stored_notif = json_decode(file_get_contents($notifJSON), true);
+
+    //request to Join
+    function joinRequest($eventId, $uid){
+        // file_put_contents('testing.txt', "Join request called with Event ID: $eventId and UID: $uid\n", FILE_APPEND);
+        // echo "join request success";
+        global $notifJSON;
+        global $stored_notif;
+        
+        //mag error , need to fix pero kapoy na
+        $lastNotif = end($stored_notif);
+        $notifId = isset($lastNotif['notifId']) ? $lastNotif['notifId'] + 1 : 1;
+        
+        $new_notif = [
+            "notifId" => $notifId,
+            "uid" => $uid,
+            "eventId" => $eventId,
+            "type" => "to-join",
+            "title" => "Requesting to Join ",
+            "body" => " is requesting to join the event."
+        ];
+
+        array_push($stored_notif, $new_notif);
+
+        if (file_put_contents($notifJSON, json_encode($stored_notif, JSON_PRETTY_PRINT))) {
+            //echo "<script>alert('Event creation successful')</script>";
+        } else {
+            echo "<script>alert('Failed to send request. Please try again.')</script>";
+        }
+    }
+
+    //request to organizer
+    function orgRequest($eventId, $uid){
+        // file_put_contents('testing.txt', "Organizer request called with Event ID: $eventId and UID: $uid\n", FILE_APPEND);
+        // echo "organizer request success";
+        global $notifJSON;
+        global $stored_notif;
+        
+        //mag error , need to fix pero kapoy na
+        $lastNotif = end($stored_notif);
+        $notifId = isset($lastNotif['notifId']) ? $lastNotif['notifId'] + 1 : 1;
+        
+        $new_notif = [
+            "notifId" => $notifId,
+            "uid" => $uid,
+            "eventId" => $eventId,
+            "type" => "to-org",
+            "title" => "Requesting to become an Event Organizer of ",
+            "body" => " is requesting to become the organizer of the event."
+        ];
+
+        array_push($stored_notif, $new_notif);
+
+        if (file_put_contents($notifJSON, json_encode($stored_notif, JSON_PRETTY_PRINT))) {
+            //echo "<script>alert('Event creation successful')</script>";
+        } else {
+            echo "<script>alert('Failed to send request. Please try again.')</script>";
         }
     }
 

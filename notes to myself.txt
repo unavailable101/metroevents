@@ -1,0 +1,30 @@
+joining events:
+    mu work, pero walay ma store na new data sa notif.json
+    calling php function from js kay, di mu gana
+    try full js to add data to notif.json pero diko kaybaw
+    update pd sa participants sa event.json
+    unsaon pag cancel or pag tang2 sa button if mana nag join?
+
+request to be an Organizer:
+    same ra prob sa joining events
+    if possible, kani unahon
+    i update ra ang orgId if i accept sa admin
+
+dash-for-user:
+    wala pani nabuhat
+    need ko na etosh ma porma
+    pero not possible if wala pakoy notifs
+    pero pwede if i manual nako buhat sa data
+    buhata ta ani ugma
+
+cancel of events:
+    mu work, pero sa last sha mu tang2
+    since di sha mu tang2, try update sa time and date
+    by setting both to null
+    if date and time is null, then mu print cancel
+
+kapoy na ko
+wa nako ka sabot
+my brain is not braining
+chatgpt is not responding
+gi kapoy pd chatgpt TTOTT

@@ -62,11 +62,11 @@
     {
         "eventId": 10,
         "adminId": 2,
-        "orgId": 6,
+        "orgId": null,
         "participants": [],
         "eventName": "SLEEPLESS NIGHTS",
         "eventType": "cramming event",
         "eventDate": "2023-12-09",
-        "eventTime": "01:23"
+        "eventTime": "22:38"
     }
 ]
